@@ -2,30 +2,27 @@ import connectDB from "./db/index.js";
 import app from './app.js';
 
 import dotenv from 'dotenv'; // Import dotenv for environment variables
-
 dotenv.config({ path: './.env' }); // Load environment variables from .env file
 
 
-
-
 connectDB()
-.then( () => {
+    .then(() => {
 
-    app.on("error", (error) => { 
-        console.log(`error in server connection : ${error}`);
-        throw error;
-    })
+        app.on("error", (error) => {
+            console.log(`error in server connection : ${error}`);
+            throw error;
+        })
 
-    app.listen(process.env.PORT || 8000, () => {
-        console.log(`server is running at port : ${process.env.PORT}`)
+        app.listen(process.env.PORT || 8000, () => {
+            console.log(`server is running at port : ${process.env.PORT}`)
+        })
     })
-})
-.catch(
-    (error) => {
-        console.log("Error: ",error);
-        throw error;
-    }
-);
+    .catch(
+        (error) => {
+            console.log("Error: ", error);
+            throw error;
+        }
+    );
 
 
 /*

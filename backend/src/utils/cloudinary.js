@@ -18,7 +18,7 @@ cloudinary.config({
                     resource_type:'auto'
                 }
             )
-            console.log("File has been SuccessFully\n",Response);
+            console.log("File has been saved SuccessFully\n",Response);
             return Response;
         } catch (error) {
             //removes the locally saved temporary file as the upload operation got failed

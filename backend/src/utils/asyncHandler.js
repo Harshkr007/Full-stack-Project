@@ -5,7 +5,10 @@ const asyncHandler = (requestHandler) => {
     }
 }
 
-/*
+export default asyncHandler;
+
+
+ /*
 const asyncHandler = (fn) => {
    return async (req,res,next) => {
         try {
@@ -21,5 +24,3 @@ const asyncHandler = (fn) => {
     }
 }
 */
-
-export default asyncHandler;

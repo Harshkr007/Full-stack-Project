@@ -3,6 +3,8 @@ import ApiError from "../utils/ApiError.js"
 import ApiResponse from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+// import mongoose from "mongoose";
+
 
 const RegisterUser = asyncHandler(
     async (req, res) => {
@@ -30,7 +32,13 @@ const RegisterUser = asyncHandler(
             throw new ApiError(400, "User with email or username already exists");
         }
 
-        const avatarLocalPath = req.files?.avatar[0]?.path;
+        // const avatarLocalPath = req.files?.avatar[0]?.path;
+        let avatarLocalPath;
+        if (req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) {
+            avatarLocalPath = req.files.avatar[0].path
+        }
+        console.log(avatarLocalPath);
+
 
         let coverImageLocalPath;
         if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
@@ -48,18 +56,22 @@ const RegisterUser = asyncHandler(
             throw new ApiError(400, "Avatar file is required1")
         }
 
-        const user = User.create({
+        const user = await User.create({
             fullName,
             avatar: avatar.url,
             coverImage: coverImage?.url || "",
             email,
             password,
-            username: userName.toLowerCase()
+            userName: userName.toLowerCase()
         })
+        console.log(user);
 
-        const createdUser = await user.findById(user._id).select(
+        /*
+        const createdUser = await User.findById(new mongoose.Types.ObjectId(user._id)).select(
             "-password -refreshToken"
         )
+        */
+        const { password: _, refreshToken: __, ...createdUser } = user.toObject();
 
         if (!createdUser) {
             throw new ApiError(500, "Something went wrong while registering the user");
